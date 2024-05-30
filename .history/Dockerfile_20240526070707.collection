@@ -1,0 +1,26 @@
+# Start with the official Airflow image for version 2.9.1
+FROM apache/airflow:2.9.1
+
+# Set the working directory
+WORKDIR /opt/airflow
+
+# Install any necessary dependencies
+RUN pip install --no-cache-dir \
+    requests
+    # Include any other dependencies needed for the data collection
+    # Example: pandas
+
+# Copy the data collection DAG file into the DAGs directory
+COPY /home/moraa/Documents/10_academy/week4/scalable_data_warehouse/dags/data_collection.py /opt/airflow/dags/
+
+# Copy other necessary files (e.g., the api controllers) if needed
+COPY /home/moraa/Documents/10_academy/week4/scalable_data_warehouse/api/controllers /opt/airflow/api/controllers
+
+# Set environment variables (optional, for Airflow configuration)
+ENV AIRFLOW__CORE__EXECUTOR=LocalExecutor
+ENV AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+
+# Command to start the Airflow scheduler and web server
+CMD ["airflow", "standalone"]
+
+

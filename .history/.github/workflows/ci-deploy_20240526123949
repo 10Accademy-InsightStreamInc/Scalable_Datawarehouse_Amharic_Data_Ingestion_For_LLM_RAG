@@ -1,0 +1,21 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Kubernetes
+        uses: actions-hub/kubectl@v1
+        with:
+          kubectl_version: '1.18'
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+        run: |
+          kubectl set image deployment/data-collection data-collection=${{ secrets.DOCKER_USERNAME }}/data_collection:latest
+          kubectl set image deployment/data-cleaning data-cleaning=${{ secrets.DOCKER_USERNAME }}/data_cleaning:latest

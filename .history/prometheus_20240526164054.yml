@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'airflow'
+    static_configs:
+      - targets: ['airflow-webserver:8080', 'airflow-scheduler:8793']

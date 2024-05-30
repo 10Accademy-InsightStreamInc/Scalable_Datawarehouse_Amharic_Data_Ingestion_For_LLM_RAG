@@ -1,0 +1,19 @@
+# Start with the official Airflow image for version 2.9.1
+FROM apache/airflow:2.9.1
+
+# Set the working directory
+WORKDIR /opt/airflow
+
+# Copy the API code
+COPY api /opt/airflow/api
+
+# Install required dependencies
+RUN pip install --no-cache-dir \
+    flask \
+    flask-restful \
+    sqlalchemy \
+    psycopg2-binary
+
+# Set the entry point
+ENTRYPOINT ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+

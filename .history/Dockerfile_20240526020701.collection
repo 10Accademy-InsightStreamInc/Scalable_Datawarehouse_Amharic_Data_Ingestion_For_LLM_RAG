@@ -1,0 +1,49 @@
+FROM python:3.10-slim
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    default-libmysqlclient-dev \
+    wget \
+    unzip \
+    xvfb \
+    libxi6 \
+    libgconf-2-4 \
+    gnupg && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Chrome and ChromeDriver
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable && \
+    wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip && \
+    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
+    rm /tmp/chromedriver.zip && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV CHROME_DRIVER_PATH=/usr/local/bin/chromedriver
+
+# Create and set working directory
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Copy the application code
+COPY . /app
+
+# Expose necessary ports (if any)
+EXPOSE 8080
+
+# Set the entrypoint and command for Airflow
+ENTRYPOINT ["airflow"]
+CMD ["webserver"]
+
+
+

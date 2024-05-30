@@ -1,0 +1,22 @@
+FROM apache/airflow:2.9.1
+
+WORKDIR /opt/airflow
+
+RUN pip install --no-cache-dir \
+    requests \
+    pandas \
+    nlp-utils
+
+COPY ./dags/data_processing.py /opt/airflow/dags/
+COPY ./api /opt/airflow/api/
+
+
+USER root
+RUN chmod -R 755 /opt/airflow/dags
+RUN chmod -R 755 /opt/airflow/api
+
+ENV PYTHONPATH=/opt/airflow/api
+
+USER airflow
+
+
