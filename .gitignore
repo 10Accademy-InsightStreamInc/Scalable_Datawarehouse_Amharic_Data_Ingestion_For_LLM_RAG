@@ -4,4 +4,8 @@ nlp/**
 __pycache__/
 .env
 data/clean/cleaned_data.csv
+fine _tuning/tokenization/tokens.csv
 /venv
+Amharic_corpus_merged_2023-04-16.csv
+attention_masks.pt
+input_ids.pt

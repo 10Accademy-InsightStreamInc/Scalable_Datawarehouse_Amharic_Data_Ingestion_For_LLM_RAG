@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { data } from "./data.js";
+import React from 'react';
+import api from "./api.js";
+import ArticleList from "./ArticleList.js"
+//import { data } from "./data.js";
 //import axios from "axios";
 import "./App.css";
 import DataList from "./search.jsx";

@@ -6,6 +6,7 @@ import uvicorn
 from models.database import create_all_tables
 
 
+
 app = FastAPI(
         title="Amharic data integration for LLM",
         description="",

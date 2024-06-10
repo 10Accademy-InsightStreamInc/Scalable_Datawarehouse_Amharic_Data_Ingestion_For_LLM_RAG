@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from models.telegram_article import TelegramArticle
 from view_model.telegram_article_vm import TelegramArticleCreateVM, TelegramArticleFilterVM 
-
+from typing import List
 
 
 def create_data(db: Session, data: TelegramArticleCreateVM):
@@ -22,13 +22,13 @@ def create_data(db: Session, data: TelegramArticleCreateVM):
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-def get_data(db: Session,skip: int = 0, limit: int = 100) -> list[TelegramArticle]:
+def get_data(db: Session,skip: int = 0, limit: int = 100) -> List[TelegramArticle]:
     try:
         return db.query(TelegramArticle).offset(skip).limit(limit).all()
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-def search_data(db: Session, query: str) -> list[TelegramArticle]:
+def search_data(db: Session, query: str) -> List[TelegramArticle]:
     try:
         search_term = f"%{query}%"
         columns = [column.name for column in inspect(TelegramArticle).columns]
@@ -42,7 +42,7 @@ def search_data(db: Session, query: str) -> list[TelegramArticle]:
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-def filter_data(db: Session, filter_params: TelegramArticleFilterVM) -> list[TelegramArticle]:
+def filter_data(db: Session, filter_params: TelegramArticleFilterVM) -> List[TelegramArticle]:
     try:
         query = db.query(TelegramArticle)
         if filter_params.id is not None:

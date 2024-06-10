@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import String,  inspect, or_
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-
+from typing import List
 from models.article import Article
 from view_model.article_vm import ArticleCreateVM, ArticleFilterVM 
 
@@ -30,13 +30,13 @@ def create_data(db: Session, data: ArticleCreateVM):
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-def get_data(db: Session, skip: int = 0, limit: int = 100) -> list[Article]:
+def get_data(db: Session, skip: int = 0, limit: int = 100) -> List[Article]:
     try:
         return db.query(Article).offset(skip).limit(limit).all()
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-def search_data(db: Session, query: str) -> list[Article]:
+def search_data(db: Session, query: str) -> List[Article]:
     try:
         search_term = f"%{query}%"
         columns = [column.name for column in inspect(Article).columns]
@@ -50,7 +50,7 @@ def search_data(db: Session, query: str) -> list[Article]:
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-def filter_data(db: Session, filter_params: ArticleFilterVM) -> list[Article]:
+def filter_data(db: Session, filter_params: ArticleFilterVM) -> List[Article]:
     try:
         query = db.query(Article)
         if filter_params.id is not None:

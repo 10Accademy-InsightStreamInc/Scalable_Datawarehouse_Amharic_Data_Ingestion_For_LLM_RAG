@@ -5,7 +5,7 @@ export const data = [{
     "article_url": "http://java.",
     "highlight": "est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu",
     "time_publish": "ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui vel sem sed sagittis",
-    "category": "habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque",
+    "category": "habitasse pladtea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque",
     "date_published": 48,
     "publisher_name": "tempor convallis nulla neque libero convallis eget eleifend luctus ultricies",
     "detail_content": "tempor convallis nulla neque libero convallis eget eleifend luctus ultricies"
